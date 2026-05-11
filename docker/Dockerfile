@@ -133,7 +133,6 @@ RUN curl https://getcroc.schollz.com | bash; \
 
 
 EXPOSE 4000
-VOLUME ["/home/nomachine"]
 
 # post-script and entrypoint
 WORKDIR /
