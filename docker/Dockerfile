@@ -4,6 +4,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y \
     xfce4 \
+    xfce4-goodies \
     x11vnc \
     xvfb \
     novnc \
@@ -16,10 +17,9 @@ RUN apt-get update && apt-get install -y \
 RUN mkdir -p /root/.vnc && \
     x11vnc -storepasswd 123456 /root/.vnc/passwd
 
+COPY nxserver.sh /nxserver.sh
+RUN chmod +x /nxserver.sh
+
 EXPOSE 8080
 
-CMD bash -c "Xvfb :1 -screen 0 1600x900x24 & \
-    sleep 2 && DISPLAY=:1 startxfce4 & \
-    sleep 3 && x11vnc -display :1 -rfbauth /root/.vnc/passwd \
-    -forever -loop -noxdamage -repeat -rfbport 5900 & \
-    websockify --web /usr/share/novnc 8080 localhost:5900"
+ENTRYPOINT ["/nxserver.sh"]
